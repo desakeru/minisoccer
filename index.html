@@ -564,54 +564,68 @@
             modal.classList.remove('flex');
         }
 
-        function downloadAsPDF() {
-            const element = document.getElementById('pdfContent');
-            const teamName = document.getElementById('teamName').value || 'FormulirPendaftaran';
-            const downloadBtn = document.querySelector('#downloadModal button:first-child');
-            const originalText = downloadBtn.innerHTML;
-            
-            // Show loading state
-            downloadBtn.innerHTML = '<span class="spinner mr-2"></span> Sedang membuat PDF...';
-            downloadBtn.disabled = true;
+// Ganti fungsi downloadAsPDF dengan ini:
+function downloadAsPDF() {
+    const element = document.getElementById('pdfContent');
+    const teamName = document.getElementById('teamName').value || 'FormulirPendaftaran';
+    const downloadBtn = document.querySelector('#downloadModal button:first-child');
+    const originalText = downloadBtn.innerHTML;
+    
+    // Validasi konten
+    if (!element || element.innerHTML.trim() === '') {
+        alert('Konten tidak tersedia untuk diunduh. Silakan muat ulang halaman.');
+        return;
+    }
 
-            const opt = {
-                margin: 10,
-                filename: `Formulir_${teamName.replace(/[^a-z0-9]/gi, '_')}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { 
-                    scale: 2,
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: true
-                },
-                jsPDF: { 
-                    unit: 'mm', 
-                    format: 'a4', 
-                    orientation: 'portrait',
-                    compress: true
-                }
-            };
+    // Cek library
+    if (!window.html2pdf) {
+        alert('Library PDF tidak terload. Silakan refresh halaman.');
+        return;
+    }
 
-            // Generate PDF
-            html2pdf().set(opt).from(element).save()
-                .then(() => {
-                    downloadBtn.innerHTML = originalText;
-                    downloadBtn.disabled = false;
-                    closeDownloadModal();
-                })
-                .catch(err => {
-                    console.error('Error generating PDF:', err);
-                    alert('Gagal membuat PDF. Silakan coba lagi.');
-                    downloadBtn.innerHTML = originalText;
-                    downloadBtn.disabled = false;
-                });
+    // Loading state
+    downloadBtn.innerHTML = '<span class="spinner mr-2"></span> Sedang membuat PDF...';
+    downloadBtn.disabled = true;
+
+    const opt = {
+        margin: 10,
+        filename: `Formulir_${teamName.replace(/[^a-z0-9]/gi, '_')}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { 
+            scale: 2,
+            logging: true,
+            useCORS: true,
+            allowTaint: false,
+            scrollX: 0,
+            scrollY: 0,
+            windowWidth: element.scrollWidth,
+            windowHeight: element.scrollHeight
+        },
+        jsPDF: { 
+            unit: 'mm', 
+            format: 'a4', 
+            orientation: 'portrait'
         }
+    };
 
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            initializePlayers();
-            showTab('daftar');
+    // Generate PDF
+    html2pdf()
+        .set(opt)
+        .from(element)
+        .save()
+        .then(() => {
+            console.log('PDF berhasil dibuat');
+        })
+        .catch(err => {
+            console.error('Error:', err);
+            alert('Gagal membuat PDF: ' + err.message);
+        })
+        .finally(() => {
+            downloadBtn.innerHTML = originalText;
+            downloadBtn.disabled = false;
+            closeDownloadModal();
         });
+}
     </script>
 </body>
 </html>
