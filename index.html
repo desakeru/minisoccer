@@ -454,132 +454,175 @@
         }
 
         // Show print modal
-        function showPrintModal(teamName, teamOrigin, managerName, managerContact, players) {
-            const modal = document.getElementById('printModal');
-            const content = document.getElementById('printContent');
-            
-            let playersHtml = '';
-            if (players && players.length > 0) {
-                players.forEach((player, index) => {
-                    playersHtml += `
-                        <tr class="border-b">
-                            <td class="py-2 px-4 text-center">${index + 1}</td>
-                            <td class="py-2 px-4">${player}</td>
-                            <td class="py-2 px-4 text-center">_____________</td>
-                        </tr>
-                    `;
-                });
-            }
-            
-            content.innerHTML = `
-                <div class="print-content">
-                    <div class="text-center mb-6">
-                        <h2 class="text-2xl font-bold text-red-800">FORMULIR PENDAFTARAN</h2>
-                        <h3 class="text-xl font-semibold text-red-600">Mini Soccer Liga Champion</h3>
-                        <hr class="my-4">
-                    </div>
-                    
-                    <div class="mb-6">
-                        <table class="w-full">
-                            <tr>
-                                <td class="py-2 font-semibold w-32">Nama Tim</td>
-                                <td class="py-2">: ${teamName}</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 font-semibold">Asal Tim</td>
-                                <td class="py-2">: ${teamOrigin}</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 font-semibold">Nama Manajer</td>
-                                <td class="py-2">: ${managerName}</td>
-                            </tr>
-                            <tr>
-                                <td class="py-2 font-semibold">Kontak Manajer</td>
-                                <td class="py-2">: ${managerContact}</td>
-                            </tr>
-                        </table>
-                    </div>
-                    
-                    <div class="mb-6">
-                        <h4 class="font-semibold mb-3">Daftar Pemain:</h4>
-                        <table class="w-full border border-gray-300">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="py-2 px-4 border-b text-center">No</th>
-                                    <th class="py-2 px-4 border-b">Nama Pemain</th>
-                                    <th class="py-2 px-4 border-b text-center">Tanda Tangan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                ${playersHtml}
-                            </tbody>
-                        </table>
-                    </div>
-                    
-                    <div class="mb-8 bg-red-50 p-4 rounded-lg border border-red-200">
-                        <h4 class="font-semibold mb-3 text-red-800">Biaya Pendaftaran:</h4>
-                        <div class="flex items-center space-x-4">
-                            <span class="font-medium">Rp.</span>
-                            <div class="border-b-2 border-gray-400 flex-1 min-w-0" style="border-bottom: 2px solid #666; height: 20px;"></div>
-                            <span class="text-sm text-gray-600">(Tuliskan nominal biaya pendaftaran)</span>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="text-center">
-                            <p class="mb-16 font-semibold">Penanggung Jawab Tim</p>
-                            <div class="border-b-2 border-gray-400 mb-2" style="border-bottom: 2px solid #666; height: 2px;"></div>
-                            <p class="text-sm text-gray-600">Nama & Tanda Tangan</p>
-                        </div>
-                        <div class="text-center">
-                            <p class="mb-16 font-semibold">Panitia Penyelenggara</p>
-                            <div class="border-b-2 border-gray-400 mb-2" style="border-bottom: 2px solid #666; height: 2px;"></div>
-                            <p class="text-sm text-gray-600">Nama & Tanda Tangan</p>
-                        </div>
-                    </div>
-                </div>
+function showPrintModal(teamName, teamOrigin, managerName, managerContact, players) {
+    const modal = document.getElementById('printModal');
+    const content = document.getElementById('printContent');
+    
+    let playersHtml = '';
+    if (players && players.length > 0) {
+        players.forEach((player, index) => {
+            playersHtml += `
+                <tr class="border-b">
+                    <td class="py-3 px-4 text-center border">${index + 1}</td>
+                    <td class="py-3 px-4 border">${player}</td>
+                    <td class="py-3 px-4 text-center border" style="width: 30%;">_____________</td>
+                </tr>
             `;
-            
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
-        }
-
-        // Close print modal
-        function closePrintModal() {
-            const modal = document.getElementById('printModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-        }
-
-        // Print form
-        function printForm() {
-            const printContent = document.getElementById('printContent').innerHTML;
-            const printWindow = window.open('', '_blank');
-            printWindow.document.write(`
-                <html>
-                    <head>
-                        <title>Formulir Pendaftaran</title>
-                        <style>
-                            body { font-family: Arial, sans-serif; margin: 20px; }
-                            table { border-collapse: collapse; }
-                            .print-content { max-width: 800px; margin: 0 auto; }
-                            @media print { body { margin: 0; } }
-                        </style>
-                    </head>
-                    <body>
-                        ${printContent}
-                    </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', function() {
-            initializePlayers();
-            showTab('daftar');
         });
+    }
+    
+    content.innerHTML = `
+        <div class="print-content">
+            <div class="text-center mb-8">
+                <div class="flex justify-center mb-4">
+                    <img src="https://bunter.desa.id/images/foto_berita/1753328421.jpg" alt="Logo" style="height: 80px; margin-right: 20px;">
+                </div>
+                <h2 class="text-2xl font-bold text-gray-900 mb-2">FORMULIR PENDAFTARAN</h2>
+                <h3 class="text-xl font-semibold text-red-600 mb-2">LOMBA MINI SOCCER KERU</h3>
+                <p class="text-gray-700">Memeriahkan HUT RI ke-80</p>
+                <hr class="my-4 border-t-2 border-gray-300">
+            </div>
+            
+            <div class="mb-8">
+                <h4 class="text-lg font-bold text-gray-800 mb-4">DATA TIM</h4>
+                <table class="w-full mb-2">
+                    <tr>
+                        <td class="py-2 font-semibold w-40">Nama Tim</td>
+                        <td class="py-2">: ${teamName}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 font-semibold">Asal Tim</td>
+                        <td class="py-2">: ${teamOrigin}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 font-semibold">Nama Manajer</td>
+                        <td class="py-2">: ${managerName}</td>
+                    </tr>
+                    <tr>
+                        <td class="py-2 font-semibold">Kontak Manajer</td>
+                        <td class="py-2">: ${managerContact}</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="mb-8">
+                <h4 class="text-lg font-bold text-gray-800 mb-4">DAFTAR PEMAIN</h4>
+                <table class="w-full border border-gray-400">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="py-3 px-4 border text-center" style="width: 10%;">No</th>
+                            <th class="py-3 px-4 border">Nama Pemain</th>
+                            <th class="py-3 px-4 border text-center" style="width: 30%;">Tanda Tangan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${playersHtml}
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="mb-8 bg-gray-100 p-4 rounded-lg border border-gray-300">
+                <h4 class="font-bold text-gray-800 mb-3">BIAYA PENDAFTARAN</h4>
+                <div class="flex items-center">
+                    <span class="font-medium mr-2">Rp.</span>
+                    <div class="border-b-2 border-gray-500 flex-1" style="height: 25px;"></div>
+                </div>
+                <p class="text-sm text-gray-600 mt-1">(Tuliskan nominal biaya pendaftaran)</p>
+            </div>
+            
+            <div class="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="text-center">
+                    <p class="mb-16 font-bold">PENANGGUNG JAWAB TIM</p>
+                    <div class="border-t-2 border-gray-500 mb-1" style="width: 80%; margin: 0 auto;"></div>
+                    <p class="text-sm text-gray-600">(Nama & Tanda Tangan)</p>
+                </div>
+                <div class="text-center">
+                    <p class="mb-16 font-bold">PANITIA PENYELENGGARA</p>
+                    <div class="border-t-2 border-gray-500 mb-1" style="width: 80%; margin: 0 auto;"></div>
+                    <p class="text-sm text-gray-600">(Nama & Tanda Tangan)</p>
+                </div>
+            </div>
+            
+            <div class="mt-8 text-center text-xs text-gray-500">
+                <p>Formulir ini dicetak secara otomatis dari Sistem Pendaftaran Online</p>
+                <p>Mini Soccer Keru - HUT RI ke-80</p>
+            </div>
+        </div>
+    `;
+    
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+}
+
+// Print form
+function printForm() {
+    const printContent = document.getElementById('printContent').innerHTML;
+    const printWindow = window.open('', '_blank');
+    printWindow.document.write(`
+        <html>
+            <head>
+                <title>Formulir Pendaftaran - ${document.getElementById('teamName').value}</title>
+                <style>
+                    body { 
+                        font-family: 'Inter', Arial, sans-serif; 
+                        margin: 0; 
+                        padding: 20px; 
+                        color: #333;
+                    }
+                    .print-content { 
+                        max-width: 800px; 
+                        margin: 0 auto;
+                        padding: 20px;
+                    }
+                    table {
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-bottom: 20px;
+                    }
+                    th, td {
+                        padding: 10px;
+                        text-align: left;
+                        border: 1px solid #ddd;
+                    }
+                    th {
+                        background-color: #f5f5f5;
+                        font-weight: bold;
+                    }
+                    hr {
+                        border: none;
+                        border-top: 1px solid #eee;
+                        margin: 20px 0;
+                    }
+                    @media print {
+                        body { 
+                            padding: 0;
+                            margin: 0;
+                        }
+                        .print-content {
+                            padding: 10mm;
+                        }
+                        @page {
+                            size: A4;
+                            margin: 15mm;
+                        }
+                    }
+                </style>
+                <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+            </head>
+            <body>
+                ${printContent}
+                <script>
+                    window.onload = function() {
+                        setTimeout(function() {
+                            window.print();
+                        }, 300);
+                    };
+                <\/script>
+            </body>
+        </html>
+    `);
+    printWindow.document.close();
+}
     </script>
 <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'969ba76fb0985d0f',t:'MTc1NDI4NTMzNS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
